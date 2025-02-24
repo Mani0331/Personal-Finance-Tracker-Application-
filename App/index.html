@@ -1,33 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Personal Finance Tracker</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 500px; margin: auto; padding: 20px; }
+        input, button, select { margin: 5px; padding: 10px; width: 80%; }
+        .transactions { margin-top: 20px; text-align: left; }
+        ul { list-style-type: none; padding: 0; }
+        li { background: #f4f4f4; margin: 5px 0; padding: 10px; border-radius: 5px; position: relative; }
+        .btn { margin: 5px; padding: 10px; width: 80%; cursor: pointer; border: none; border-radius: 5px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #28a745; color: white; }
+        .btn-warning { background: #f0ad4e; color: white; }
+    </style>
 </head>
 <body>
-<h1>Personal Finance Tracker</h1>
+    <div class="container">
+        <h2>Finance Tracker</h2>
 
-<div id="transaction-form">
-<h2>Add Transaction</h2>
-<input type="text" id="description" placeholder="Description">
-<input type="number" id="amount" placeholder="Amount">
-<button onclick="addTransaction()">Add</button>
-</div>
-
-<div id="transaction-list">
-<h2>Transaction History</h2>
-<table>
-<thead>
-<tr>
-<th>Description</th>
-<th>Amount</th>
-</tr>
-</thead>
-<tbody id="transactions">
-</tbody>
-</table>
-</div>
-
-<script src="script.js"></script>
+        <button class="btn btn-primary" onclick="window.location.href='add_transaction.html'">Add Transaction</button>
+        <button class="btn btn-secondary" onclick="window.location.href='transaction_history.html'">Transaction History</button>
+        <button class="btn btn-warning" onclick="window.location.href='daily_transaction.html'">Daily Transaction History</button>
+    </div>
 </body>
 </html>

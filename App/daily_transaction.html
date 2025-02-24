@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Transactions</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f8f9fa; }
+        .container { max-width: 700px; margin: auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background: #007bff; color: white; }
+        .summary { font-weight: bold; background: #f1f1f1; }
+        .btn-secondary { background: #28a745; color: white; padding: 10px; width: 80%; margin-top: 10px; border-radius: 5px; display: block; margin: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Daily Transactions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody id="transactionTable"></tbody>
+            <tfoot>
+                <tr class="summary">
+                    <td>Total Income:</td>
+                    <td id="totalIncome">0</td>
+                    <td></td>
+                </tr>
+                <tr class="summary">
+                    <td>Total Expense:</td>
+                    <td id="totalExpense">0</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <button class="btn-secondary" onclick="window.location.href='index.html'">Back to Home</button>
+    </div>
+
+    <script>
+        async function loadDailyTransactions() {
+            try {
+                // Get today's date in local timezone (YYYY-MM-DD format)
+                const today = new Date().toLocaleDateString('en-CA');  
+                console.log("Today's Date:", today); // 🛠 Log date for debugging
+
+                const res = await fetch('http://localhost:3000/transactions');
+                if (!res.ok) throw new Error('Failed to fetch transactions');
+                const transactions = await res.json();
+
+                console.log("Fetched Transactions:", transactions); // 🛠 Log all transactions
+
+                // Filter transactions by today's date
+                const dailyTransactions = transactions.filter(t => t.date === today);
+                console.log("Filtered Transactions:", dailyTransactions); // 🛠 Log filtered transactions
+
+                let totalIncome = 0;
+                let totalExpense = 0;
+
+                // Generate table rows & calculate totals
+                const tableBody = document.getElementById('transactionTable');
+                tableBody.innerHTML = dailyTransactions.length
+                    ? dailyTransactions.map(t => {
+                        if (t.type === 'income') totalIncome += Number(t.amount);
+                        if (t.type === 'expense') totalExpense += Number(t.amount);
+                        return `
+                            <tr>
+                                <td>${t.description}</td>
+                                <td>${t.amount}</td>
+                                <td>${t.type}</td>
+                            </tr>`;
+                    }).join('')
+                    : "<tr><td colspan='3'>No transactions found for today.</td></tr>";
+
+                // Update total amounts
+                document.getElementById('totalIncome').textContent = totalIncome.toFixed(2);
+                document.getElementById('totalExpense').textContent = totalExpense.toFixed(2);
+
+            } catch (error) {
+                console.error('Error loading transactions:', error);
+            }
+        }
+
+        // Call function on page load
+        loadDailyTransactions();
+    </script>
+</body>
+</html>
