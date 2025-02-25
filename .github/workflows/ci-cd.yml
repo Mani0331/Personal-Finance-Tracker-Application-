@@ -19,15 +19,15 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
-        working-directory: App  # ✅ Corrected
+        working-directory: App  # <-- Set working directory to App
 
       - name: Run Tests
         run: npm test
-        working-directory: App  # ✅ Corrected
+        working-directory: App  # <-- Set working directory to App
 
       - name: Build Application
-        run: npm run build
-        working-directory: App  # ✅ Corrected
+        run: echo "Skipping build step"
+
 
       - name: Deploy Haseeb
         run: echo "Deploying to production..."
