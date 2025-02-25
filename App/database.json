@@ -6,6 +6,13 @@
       "amount": "5",
       "type": "income",
       "date": "2025-02-25"
+    },
+    {
+      "id": 1740483169056,
+      "description": "wan",
+      "amount": "8000",
+      "type": "expense",
+      "date": "2025-02-25"
     }
   ]
 }
