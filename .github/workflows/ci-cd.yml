@@ -17,18 +17,17 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Set Working Directory
-        run: cd App
-
       - name: Install Dependencies
         run: npm install
-        working-directory: App
+        working-directory: App  # ✅ Corrected
 
       - name: Run Tests
         run: npm test
+        working-directory: App  # ✅ Corrected
 
       - name: Build Application
         run: npm run build
+        working-directory: App  # ✅ Corrected
 
       - name: Deploy Haseeb
         run: echo "Deploying to production..."
