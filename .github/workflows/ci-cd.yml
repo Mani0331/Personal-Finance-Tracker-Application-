@@ -9,8 +9,8 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - name:  Checkout Repository
+        uses:  actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -18,16 +18,16 @@ jobs:
           node-version: '18'
 
       - name: Install Dependencies
-        run: npm install
-        working-directory: App  # <-- Set working directory to App
+        run:  npm install
+        working-directory:  App  
 
       - name: Run Tests
-        run: npm test
-        working-directory: App  # <-- Set working directory to App
+        run:  npm test
+        working-directory: App  
 
       - name: Build Application
         run: echo "Skipping build step"
 
 
       - name: Deploy Haseeb
-        run: echo "Deploying to production..."
+        run:  echo "Deploying to production.."
