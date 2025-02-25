@@ -17,8 +17,12 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Set Working Directory
+        run: cd App
+
       - name: Install Dependencies
         run: npm install
+        working-directory: App
 
       - name: Run Tests
         run: npm test
