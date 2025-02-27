@@ -1,5 +1,5 @@
 # Node.js ka official image use karein
-FROM node:18  
+FROM node: 18  
 
 # Kaam ki directory set karein
 WORKDIR /app  
