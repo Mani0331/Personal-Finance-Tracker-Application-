@@ -1,6 +1,7 @@
-import chai from 'chai';
+import * as chai from 'chai';  // Fix for ES module import issue
 import chaiHttp from 'chai-http';
-import app from '../server.js'; // Correct import
+import request from 'supertest';
+import app from '../server.js';
 
 const { expect } = chai;
 chai.use(chaiHttp);
@@ -8,61 +9,39 @@ chai.use(chaiHttp);
 describe('Transaction API Tests', () => {
     let transactionId;
 
-    // Test 1: Get Transactions (Initially Empty)
-    it('GET /transactions should return an array', (done) => {
-        chai.request(app) // Use `app` instead of `server`
-            .get('/transactions')
-            .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.an('array');
-                done();
-            });
+    it('GET /transactions should return an array', async () => {
+        const res = await request(app).get('/transactions');
+        expect(res.status).to.equal(200);
+        expect(res.body).to.be.an('array');
     });
 
-    // Test 2: Add a Transaction
-    it('POST /transactions should add a new transaction', (done) => {
+    it('POST /transactions should add a new transaction', async () => {
         const newTransaction = {
             description: "Test Expense",
             amount: 100,
             type: "expense"
         };
 
-        chai.request(app)
-            .post('/transactions')
-            .send(newTransaction)
-            .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.have.property('transaction');
-                transactionId = res.body.transaction.id;
-                done();
-            });
+        const res = await request(app).post('/transactions').send(newTransaction);
+        expect(res.status).to.equal(200);
+        expect(res.body).to.have.property('transaction');
+        transactionId = res.body.transaction.id;
     });
 
-    // Test 3: Edit a Transaction
-    it('PUT /transactions/:id should update a transaction', (done) => {
+    it('PUT /transactions/:id should update a transaction', async () => {
         const updatedTransaction = {
             description: "Updated Test Expense",
             amount: 200,
             type: "expense"
         };
 
-        chai.request(app)
-            .put(`/transactions/${transactionId}`)
-            .send(updatedTransaction)
-            .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body.transaction.amount).to.equal(200);
-                done();
-            });
+        const res = await request(app).put(`/transactions/${transactionId}`).send(updatedTransaction);
+        expect(res.status).to.equal(200);
+        expect(res.body.transaction.amount).to.equal(200);
     });
 
-    // Test 4: Delete a Transaction
-    it('DELETE /transactions/:id should delete a transaction', (done) => {
-        chai.request(app)
-            .delete(`/transactions/${transactionId}`)
-            .end((err, res) => {
-                expect(res).to.have.status(200);
-                done();
-            });
+    it('DELETE /transactions/:id should delete a transaction', async () => {
+        const res = await request(app).delete(`/transactions/${transactionId}`);
+        expect(res.status).to.equal(200);
     });
 });
