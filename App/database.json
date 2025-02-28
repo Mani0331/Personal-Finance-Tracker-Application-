@@ -27,6 +27,13 @@
       "amount": "88",
       "type": "income",
       "date": "2025-03-01"
+    },
+    {
+      "id": 1740785713987,
+      "description": "wan",
+      "amount": "9000",
+      "type": "income",
+      "date": "2025-03-01"
     }
   ]
 }
