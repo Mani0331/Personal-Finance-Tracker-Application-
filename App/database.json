@@ -5,7 +5,7 @@
       "description": "wan",
       "amount": "5",
       "type": "income",
-      "date": "2025-02-25"
+      "date": "2025-02-24"
     },
     {
       "id": 1740483169056,
@@ -13,6 +13,20 @@
       "amount": "8000",
       "type": "expense",
       "date": "2025-02-25"
+    },
+    {
+      "id": 1740782144413,
+      "description": "electric",
+      "amount": "899",
+      "type": "income",
+      "date": "2025-03-01"
+    },
+    {
+      "id": 1740782658301,
+      "description": "wan",
+      "amount": "88",
+      "type": "income",
+      "date": "2025-03-01"
     }
   ]
 }
