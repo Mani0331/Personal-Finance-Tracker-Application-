@@ -1,6 +1,7 @@
-const express = require('express');
-const fs = require('fs');
-const cors = require('cors');
+import express from 'express';
+import fs from 'fs';
+import cors from 'cors';
+
 const app = express();
 const PORT = 3000;
 
@@ -79,3 +80,5 @@ app.put('/transactions/:id', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+export default app;
