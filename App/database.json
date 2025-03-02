@@ -1,44 +1,9 @@
 {
   "transactions": [
     {
-      "id": 1740430315983,
+      "id": 1740787231982,
       "description": "wan",
-      "amount": "5",
-      "type": "income",
-      "date": "2025-02-24"
-    },
-    {
-      "id": 1740483169056,
-      "description": "wan",
-      "amount": "8000",
-      "type": "expense",
-      "date": "2025-02-25"
-    },
-    {
-      "id": 1740782144413,
-      "description": "electric",
-      "amount": "899",
-      "type": "income",
-      "date": "2025-03-01"
-    },
-    {
-      "id": 1740782658301,
-      "description": "wan",
-      "amount": "88",
-      "type": "income",
-      "date": "2025-03-01"
-    },
-    {
-      "id": 1740785713987,
-      "description": "wan",
-      "amount": "9000",
-      "type": "income",
-      "date": "2025-03-01"
-    },
-    {
-      "id": 1740786589890,
-      "description": "wan",
-      "amount": "8000",
+      "amount": "3500.00",
       "type": "income",
       "date": "2025-03-01"
     }
