@@ -43,31 +43,31 @@
     </div>
 
     <script>
-        async function loadDailyTransactions() {
+        async function loadDailyTransaction() {
             try {
                 // Get today's date in local timezone (YYYY-MM-DD format)
-                const today = new Date().toLocaleDateString('en-CA');  
-                console.log("Today's Date:", today); // 🛠 Log date for debugging
+                const toda = new Date().toLocaleDateString('en-CA');  
+                console.log("Today's Date:", toda); // 🛠 Log date for debugging
 
-                const res = await fetch('http://localhost:3000/transactions');
-                if (!res.ok) throw new Error('Failed to fetch transactions');
-                const transactions = await res.json();
+                const rest = await fetch('http://localhost:3000/transactions');
+                if (!rest.ok) throw new Error('Failed to fetch transactions');
+                const transaction = await rest.json();
 
-                console.log("Fetched Transactions:", transactions); // 🛠 Log all transactions
+                console.log("Fetched Transactions:", transaction); // 🛠 Log all transactions
 
                 // Filter transactions by today's date
-                const dailyTransactions = transactions.filter(t => t.date === today);
-                console.log("Filtered Transactions:", dailyTransactions); // 🛠 Log filtered transactions
+                const dailyTransaction = transaction.filter(t => t.date === toda);
+                console.log("Filtered Transactions:", dailyTransaction); // 🛠 Log filtered transactions
 
-                let totalIncome = 0;
-                let totalExpense = 0;
+                let totalIncom = 0;
+                let totalExpens = 0;
 
                 // Generate table rows & calculate totals
                 const tableBody = document.getElementById('transactionTable');
-                tableBody.innerHTML = dailyTransactions.length
-                    ? dailyTransactions.map(t => {
-                        if (t.type === 'income') totalIncome += Number(t.amount);
-                        if (t.type === 'expense') totalExpense += Number(t.amount);
+                tableBody.innerHTML = dailyTransaction.length
+                    ? dailyTransaction.map(t => {
+                        if (t.type === 'income') totalIncom += Number(t.amount);
+                        if (t.type === 'expense') totalExpens += Number(t.amount);
                         return `
                             <tr>
                                 <td>${t.description}</td>
@@ -78,8 +78,8 @@
                     : "<tr><td colspan='3'>No transactions found for today.</td></tr>";
 
                 // Update total amounts
-                document.getElementById('totalIncome').textContent = totalIncome.toFixed(2);
-                document.getElementById('totalExpense').textContent = totalExpense.toFixed(2);
+                document.getElementById('totalIncome').textContent = totalIncom.toFixed(2);
+                document.getElementById('totalExpense').textContent = totalExpens.toFixed(2);
 
             } catch (error) {
                 console.error('Error loading transactions:', error);
@@ -87,7 +87,7 @@
         }
 
         // Call function on page load
-        loadDailyTransactions();
+        loadDailyTransaction();
     </script>
 </body>
 </html>

@@ -1,11 +1,3 @@
 {
-  "transactions": [
-    {
-      "id": 1740787231982,
-      "description": "wan",
-      "amount": "3500.00",
-      "type": "income",
-      "date": "2025-03-01"
-    }
-  ]
+  "transactions": []
 }
