@@ -22,7 +22,7 @@ jobs:
         working-directory:  App  
 
         - name: Run Mocha Tests
-        run: npx mocha test/server.test.js --exit
+        run: npx mocha test/server.test.js
         working-directory: App  
 
       - name: Build Docker Image
