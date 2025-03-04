@@ -9,8 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name:  Checkout Repository
-        uses:  actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -18,10 +18,10 @@ jobs:
           node-version: '18'
 
       - name: Install Dependencies
-        run:  npm install
-        working-directory:  App  
+        run: npm install
+        working-directory: App  
 
-        - name: Run Mocha Tests
+      - name: Run Mocha Tests
         run: npx mocha test/server.test.js --exit
         working-directory: App  
 
@@ -29,18 +29,10 @@ jobs:
         run: docker build -t haseeb810/finance-tracker:latest -f docker/Dockerfile .
 
       - name: Login to Docker Hub
-        run: echo "${{secrets.DOCKER_PASSWORD}}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Push Docker Image to Docker Hub
         run: docker push haseeb810/finance-tracker:latest
 
-      # - name: Build Application
-      #   run: echo "Skipping build step"
-
-
-      # - name: Deploy Haseeb
-      #   run:  echo "Deploying to production.."
-
       - name: Deploy Application
-        run: |
-          echo "Deployment for Windows"
+        run: echo "Deployment for Windows"
