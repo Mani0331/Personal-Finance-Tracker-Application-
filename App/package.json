@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node server.js",
     "test": "mocha test/server.test.js --exit"
-   
   },
   "keywords": [],
   "author": "",

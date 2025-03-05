@@ -4,37 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction History</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background: #f8f9fa; }
-        .container { max-width: 800px; margin: auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-        th { background: #007bff; color: white; }
-        .btn { padding: 5px 10px; cursor: pointer; border: none; border-radius: 3px; }
-        .edit { background: #f0ad4e; color: white; }
-        .delete { background: #d9534f; color: white; }
-        .btn-secondary { background: #28a745; color: white; padding: 10px; width: 80%; margin-top: 10px; border-radius: 5px; display: block; margin: auto; }
-        input, select { width: 100%; border: none; padding: 5px; font-size: 14px; }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Transaction History</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>Type</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="transactionTable"></tbody>
-        </table>
-        <button class="btn-secondary" onclick="window.location.href='index.html'">Back to Home</button>
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h2 class="text-center mb-4">Transaction History</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTable"></tbody>
+                    </table>
+                </div>
+                <div class="text-center mt-3">
+                    <button class="btn btn-success" onclick="window.location.href='index.html'">Back to Home</button>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         async function loadTransactions() {
             try {
@@ -42,22 +56,22 @@
                 if (!res.ok) throw new Error('Failed to fetch transactions');
                 const transactions = await res.json();
 
-                document.getElementById('transactionTable').innerHTML = transactions.map(t => `  
-                    <tr data-id="${t.id}">  
-                        <td><input type="date" value="${t.date.split('T')[0]}" class="edit-field"></td>  
-                        <td><input type="text" value="${t.description}" class="edit-field"></td>  
-                        <td><input type="number" value="${t.amount}" class="edit-field"></td>  
-                        <td>  
-                            <select class="edit-field">  
-                                <option value="income" ${t.type === 'income' ? 'selected' : ''}>Income</option>  
-                                <option value="expense" ${t.type === 'expense' ? 'selected' : ''}>Expense</option>  
-                            </select>  
-                        </td>  
-                        <td>  
-                            <button class="btn edit" onclick="updateTransaction(${t.id}, this)">Save</button>  
-                            <button class="btn delete" onclick="deleteTransaction(${t.id})">Delete</button>  
-                        </td>  
-                    </tr>  
+                document.getElementById('transactionTable').innerHTML = transactions.map(t => `
+                    <tr data-id="${t.id}">
+                        <td><input type="date" value="${t.date.split('T')[0]}" class="form-control edit-field"></td>
+                        <td><input type="text" value="${t.description}" class="form-control edit-field"></td>
+                        <td><input type="number" value="${t.amount}" class="form-control edit-field"></td>
+                        <td>
+                            <select class="form-control edit-field">
+                                <option value="income" ${t.type === 'income' ? 'selected' : ''}>Income</option>
+                                <option value="expense" ${t.type === 'expense' ? 'selected' : ''}>Expense</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="updateTransaction(${t.id}, this)">Save</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteTransaction(${t.id})">Delete</button>
+                        </td>
+                    </tr>
                 `).join('');
             } catch (error) {
                 console.error('Error loading transactions:', error);
@@ -75,37 +89,36 @@
         }
 
         async function updateTransaction(id, btn) {
-    const row = btn.closest("tr");
-    const newDate = row.cells[0].querySelector("input").value; // Directly use input value (YYYY-MM-DD)
-    const newDescription = row.cells[1].querySelector("input").value;
-    const newAmount = row.cells[2].querySelector("input").value;
-    const newType = row.cells[3].querySelector("select").value;
+            const row = btn.closest("tr");
+            const newDate = row.cells[0].querySelector("input").value;
+            const newDescription = row.cells[1].querySelector("input").value;
+            const newAmount = row.cells[2].querySelector("input").value;
+            const newType = row.cells[3].querySelector("select").value;
 
-    if (!newDate || !newDescription || !newAmount || !newType) {
-        alert("All fields are required.");
-        return;
-    }
+            if (!newDate || !newDescription || !newAmount || !newType) {
+                alert("All fields are required.");
+                return;
+            }
 
-    if (!confirm("Are you sure you want to update this transaction?")) return;
+            if (!confirm("Are you sure you want to update this transaction?")) return;
 
-    try {
-        await fetch(`http://localhost:3000/transactions/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                date: newDate,  // ✅ No UTC conversion, only YYYY-MM-DD
-                description: newDescription,
-                amount: newAmount,
-                type: newType
-            })
-        });
-        alert("Transaction updated successfully!");
-        setTimeout(loadTransactions, 500); // **Wait for 500ms before reloading table**
-    } catch (error) {
-        console.error('Error updating transaction:', error);
-    }
-}
-
+            try {
+                await fetch(`http://localhost:3000/transactions/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        date: newDate,
+                        description: newDescription,
+                        amount: newAmount,
+                        type: newType
+                    })
+                });
+                alert("Transaction updated successfully!");
+                setTimeout(loadTransactions, 500);
+            } catch (error) {
+                console.error('Error updating transaction:', error);
+            }
+        }
 
         loadTransactions();
     </script>

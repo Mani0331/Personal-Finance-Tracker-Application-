@@ -4,29 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Transaction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .container { max-width: 500px; margin: auto; padding: 20px; }
-        input, button, select { margin: 5px; padding: 10px; width: 80%; }
-        .btn { padding: 10px; width: 80%; cursor: pointer; border: none; border-radius: 5px; }
-        .btn-primary { background: #007bff; color: white; }
-        .btn-secondary { background: #28a745; color: white; }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Add New Transaction</h2>
-        <input type="text" id="description" placeholder="Description">
-        <input type="number" id="amount" placeholder="Amount">
-        <select id="type">
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
-        </select>
-        <button class="btn btn-primary" onclick="addTransactio()">Add Transaction</button>
-        <br>
-        <button class="btn btn-secondary" onclick="window.location.href='index.html'">Back to Home</button>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Add New Transaction</h2>
+                <div class="form-group">
+                    <input type="text" id="description" class="form-control" placeholder="Description">
+                </div>
+                <div class="form-group">
+                    <input type="number" id="amount" class="form-control" placeholder="Amount">
+                </div>
+                <div class="form-group">
+                    <select id="type" class="form-control">
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary btn-block mb-3" onclick="addTransactio()">Add Transaction</button>
+                    <button class="btn btn-secondary btn-block" onclick="window.location.href='index.html'">Back to Home</button>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         async function addTransactio() {
             const description = document.getElementById('description').value.trim();
