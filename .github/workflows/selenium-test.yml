@@ -1,0 +1,140 @@
+name: Selenium Tests
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'App/**'
+      - '.github/workflows/selenium-test.yml'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'App/**'
+      - '.github/workflows/selenium-test.yml'
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        description: 'Run the workflow with debug logging'
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: '0 0 * * 0'  # Run weekly on Sunday
+
+env:
+  FORCE_COLOR: 1  # Enable colored output
+  DEBUG: ${{ github.event.inputs.debug_enabled }}
+
+jobs:
+  test:
+    runs-on: windows-latest
+    timeout-minutes: 10
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+      fail-fast: false
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2  # For better PR comparison
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: 'App/package-lock.json'
+
+    - name: Install Chrome
+      uses: browser-actions/setup-chrome@latest
+      with:
+        chrome-version: stable
+
+    - name: Cache Selenium
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/selenium
+        key: ${{ runner.os }}-selenium-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-selenium-
+
+    - name: Install dependencies
+      run: |
+        cd App
+        npm ci
+      
+    - name: Install test dependencies
+      run: |
+        cd App
+        npm install selenium-webdriver chromedriver mocha @types/selenium-webdriver --save-dev
+
+    - name: Run npm audit
+      run: |
+        cd App
+        npm audit
+      continue-on-error: true
+
+    - name: Run Selenium tests
+      id: run_tests
+      run: |
+        cd App/test
+        npx mocha financeapptest.spec.js --timeout 30000 --reporter mochawesome
+      env:
+        CI: true
+        NODE_ENV: test
+        SELENIUM_BROWSER: chrome
+        SELENIUM_HEADLESS: true
+
+    - name: Generate test report
+      if: always()
+      run: |
+        cd App/test
+        npx mochawesome-merge mochawesome-report/*.json > testReport.json
+        npx mochawesome-report-generator testReport.json
+
+    - name: Upload test report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-report-${{ matrix.node-version }}
+        path: |
+          App/test/mochawesome-report
+          App/test/testReport.*
+        if-no-files-found: warn
+
+    - name: Upload test screenshots on failure
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-failure-screenshots-${{ matrix.node-version }}
+        path: App/test/test-failure-screenshot.png
+        if-no-files-found: ignore
+
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "::error::Selenium tests failed on Node.js ${{ matrix.node-version }}"
+
+    - name: Cleanup
+      if: always()
+      run: |
+        cd App/test
+        rm -f test-failure-screenshot.png
+        rm -rf mochawesome-report
+
+  notify:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check test results
+        run: |
+          if [[ "${{ needs.test.result }}" == "success" ]]; then
+            echo "All tests passed successfully!"
+          else
+            echo "Some tests failed. Check the test report for details."
+            exit 1
+          fi
