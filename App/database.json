@@ -1,3 +1,11 @@
 {
-  "transactions": []
+  "transactions": [
+    {
+      "id": 1741277924823,
+      "description": "wan",
+      "amount": "3500.00",
+      "type": "income",
+      "date": "2025-03-06"
+    }
+  ]
 }
