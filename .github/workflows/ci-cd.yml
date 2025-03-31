@@ -50,3 +50,4 @@ jobs:
           npm install -g snyk
           snyk auth ${{ secrets.SNYK_TOKEN }}
           snyk test
+        working-directory: App
